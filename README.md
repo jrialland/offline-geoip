@@ -1,6 +1,5 @@
 
 
-[![](https://jitpack.io/v/jrialland/offline-geoip.svg)](https://jitpack.io/#jrialland/offline-geoip)
 [![Build Status](https://travis-ci.org/jrialland/offline-geoip.svg)](https://travis-ci.org/jrialland/offline-geoip)
 [![codecov](https://codecov.io/gh/jrialland/offline-geoip/branch/master/graph/badge.svg)](https://codecov.io/gh/jrialland/offline-geoip)
 
@@ -13,6 +12,9 @@ Example code :
 location = GeoIpDb.getLocation(Locale.FRENCH, InetAddress.getByName("202.201.64.112"));
 Assert.assertEquals("Lanzhou", location.getCityName());
 ```
+
+
+NB : Do NOT get/build this project through jitpack.io, some resources would be missing from the jar !
 
 ----
 
