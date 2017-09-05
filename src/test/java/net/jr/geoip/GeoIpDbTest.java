@@ -26,6 +26,10 @@ public class GeoIpDbTest {
     Location location2 = GeoIpDb.getLocation(Locale.FRENCH, InetAddress.getByName("202.201.64.112"));
     Assert.assertEquals("Lanzhou", location2.getCityName());
     System.out.println(location2);
+    
+    Assert.assertEquals("Province de Gansu", location2.getSubdivisions().get(0));
+    Assert.assertEquals("Chine",location2.getCountry());
+    
     Assert.assertNotEquals(location1.hashCode(), location2.hashCode());
     Assert.assertEquals(location1, location2);
   }
