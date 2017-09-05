@@ -1,0 +1,117 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>net.jr</groupId>
+	<artifactId>geoip</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<build>
+		<plugins>
+
+                        <!-- get geoip databases from (https://dev.maxmind.com/geoip/geoip2/downloadable/) -->
+			<plugin>
+			    <groupId>com.alexecollins.maven.plugin</groupId>
+			    <artifactId>script-maven-plugin</artifactId>
+			    <version>1.0.0</version>
+			    <executions>
+			      <execution>
+				<phase>package</phase>
+				<goals>
+				    <goal>execute</goal>
+				</goals>
+				<configuration>
+				  <language>javascript</language>
+				  <script><![CDATA[
+					importPackage(java.lang);
+     				importPackage(java.io);
+					importPackage(org.apache.http.impl.client);
+					importPackage(org.apache.http.client.fluent);
+                                        
+                    var files = ["GeoLite2-City.tar.gz", /*"GeoLite2-Country.tar.gz"*/];
+                    for(var i = 0; i<files.length; i++) {
+                      var file = new File(project.basedir + "/src/main/resources/" + files[i]);
+					  if(!file.exists()) {
+                         var url = "http://geolite.maxmind.com/download/geoip/database/" + files[i];
+                         System.out.println(url);
+    				     var client = new DefaultHttpClient();
+    					 client.setRedirectStrategy(new LaxRedirectStrategy());
+						 var exec = Executor.newInstance(client);
+                         exec.execute(Request.Get(url)).saveContent(file);
+                      }
+                    }
+				  ]]></script>
+				</configuration>
+			      </execution>
+			    </executions>
+			    <dependencies>
+				<dependency>
+				    <groupId>org.mozilla</groupId>
+				    <artifactId>rhino</artifactId>
+				    <version>1.7R5</version>
+				</dependency>
+				<dependency>
+				    <groupId>org.apache.httpcomponents</groupId>
+				    <artifactId>fluent-hc</artifactId>
+				    <version>4.5.3</version>
+				</dependency>
+			    </dependencies>
+			</plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <quiet>true</quiet>
+                    <formats>
+                        <format>html</format>
+                        <format>xml</format>
+                    </formats>
+                    <check />
+                </configuration>
+            </plugin>
+
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.12</version>
+		    <scope>test</scope>
+		</dependency>
+
+	    <dependency>
+		<groupId>com.maxmind.db</groupId>
+		<artifactId>maxmind-db</artifactId>
+		<version>1.2.2</version>
+	    </dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.14</version>
+		</dependency>
+	</dependencies>
+
+</project>
+
