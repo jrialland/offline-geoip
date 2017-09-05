@@ -1,5 +1,6 @@
 
 
+[![](https://jitpack.io/v/jrialland/offline-geoip.svg)](https://jitpack.io/#jrialland/offline-geoip)
 [![Build Status](https://travis-ci.org/jrialland/offline-geoip.svg)](https://travis-ci.org/jrialland/offline-geoip)
 [![codecov](https://codecov.io/gh/jrialland/offline-geoip/branch/master/graph/badge.svg)](https://codecov.io/gh/jrialland/offline-geoip)
 
