@@ -26,86 +26,63 @@
 	<build>
 		<plugins>
 
-                        <!-- get geoip databases from (https://dev.maxmind.com/geoip/geoip2/downloadable/) -->
+
 			<plugin>
-			    <groupId>com.alexecollins.maven.plugin</groupId>
-			    <artifactId>script-maven-plugin</artifactId>
-			    <version>1.0.0</version>
-			    <executions>
-			      <execution>
-				<phase>package</phase>
-				<goals>
-				    <goal>execute</goal>
-				</goals>
-				<configuration>
-				  <language>javascript</language>
-				  <script><![CDATA[
-					importPackage(java.lang);
-     				importPackage(java.io);
-					importPackage(org.apache.http.impl.client);
-					importPackage(org.apache.http.client.fluent);
-                                        
-                    var files = ["GeoLite2-City.tar.gz", /*"GeoLite2-Country.tar.gz"*/];
-                    for(var i = 0; i<files.length; i++) {
-                      var file = new File(project.basedir + "/src/main/resources/" + files[i]);
-                      file.getParentFile().mkdirs();
-					  if(!file.exists()) {
-                         var url = "http://geolite.maxmind.com/download/geoip/database/" + files[i];
-                         System.out.println(url);
-    				     var client = new DefaultHttpClient();
-    					 client.setRedirectStrategy(new LaxRedirectStrategy());
-						 var exec = Executor.newInstance(client);
-                         exec.execute(Request.Get(url)).saveContent(file);
-                      }
-                    }
-				  ]]></script>
-				</configuration>
-			      </execution>
-			    </executions>
-			    <dependencies>
-				<dependency>
-				    <groupId>org.mozilla</groupId>
-				    <artifactId>rhino</artifactId>
-				    <version>1.7R5</version>
-				</dependency>
-				<dependency>
-				    <groupId>org.apache.httpcomponents</groupId>
-				    <artifactId>fluent-hc</artifactId>
-				    <version>4.5.3</version>
-				</dependency>
-			    </dependencies>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>1.3.0</version>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz</url>
+							<outputFileName>GeoLite2-City.tar.gz</outputFileName>
+							<outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <quiet>true</quiet>
-                    <formats>
-                        <format>html</format>
-                        <format>xml</format>
-                    </formats>
-                    <check />
-                </configuration>
-            </plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<quiet>true</quiet>
+					<formats>
+						<format>html</format>
+						<format>xml</format>
+					</formats>
+					<check />
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>
 
 	<dependencies>
 		<dependency>
-		    <groupId>junit</groupId>
-		    <artifactId>junit</artifactId>
-		    <version>4.12</version>
-		    <scope>test</scope>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 
-	    <dependency>
-            <groupId>com.maxmind.db</groupId>
-            <artifactId>maxmind-db</artifactId>
-            <version>1.2.2</version>
-	    </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.7.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.maxmind.db</groupId>
+			<artifactId>maxmind-db</artifactId>
+			<version>1.2.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>

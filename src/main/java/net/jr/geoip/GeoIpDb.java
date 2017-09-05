@@ -67,24 +67,28 @@ public class GeoIpDb {
 
   public static Location getLocation(Locale locale, InetAddress inetAddress) throws UnknownHostException {
     if (inetAddress == null) {
-      return null;
+      return Location.NotFound;
     }
     inetAddress = InetAddress.getByAddress(inetAddress.getAddress());
     Location location = new Location();
+    boolean found = false;
     try {
       // fillLocation(locale, inetAddress, country, location);
-      fillLocation(locale, inetAddress, city, location);
+      found = found || fillLocation(locale, inetAddress, city, location);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    return location;
+    return found ? location : Location.NotFound;
   }
 
-  private static void fillLocation(Locale locale, InetAddress inetAddress, Reader db, Location location) throws IOException {
+  private static boolean fillLocation(Locale locale, InetAddress inetAddress, Reader db, Location location) throws IOException {
     JsonNode jsonNode = db.get(inetAddress);
     if (jsonNode == null) {
-      return;
+      return false;
     } else {
+
+      boolean found = false;
+
       JsonNode continentNode = jsonNode.get("continent");
       if (continentNode != null) {
         location.setContinentCode(continentNode.get("code").asText());
@@ -94,34 +98,41 @@ public class GeoIpDb {
       if (countryNode != null) {
         location.setCountry(forLocale(locale, countryNode.get("names")));
         location.setCountryIsoCode(countryNode.get("iso_code").asText());
+        found = true;
       }
       if (location.getCountry() == null) {
         JsonNode registeredCountryNode = jsonNode.get("registered_country");
         if (countryNode != null) {
           location.setCountry(forLocale(locale, registeredCountryNode.get("names")));
           location.setCountryIsoCode(registeredCountryNode.get("iso_code").asText());
+          found = true;
         }
       }
       JsonNode cityNode = jsonNode.get("city");
       if (cityNode != null) {
         location.setCityName(forLocale(locale, cityNode.get("names")));
+        found = true;
       }
       JsonNode postalNode = jsonNode.get("postal");
       if (postalNode != null) {
         location.setPostalCode(postalNode.get("code").asText());
+        found = true;
       }
       JsonNode locationNode = jsonNode.get("location");
       if (locationNode != null) {
         location.setLat(locationNode.get("latitude").asDouble());
         location.setLon(locationNode.get("longitude").asDouble());
+        found = true;
       }
       JsonNode subvisionsNode = jsonNode.get("subdivisions");
       if (subvisionsNode != null) {
         for (int i = 0; i < subvisionsNode.size(); i++) {
           String name = forLocale(locale, subvisionsNode.get(i).get("names"));
           location.getSubdivisions().add(name);
+          found = true;
         }
       }
+      return found;
     }
   }
 
