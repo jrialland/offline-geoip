@@ -48,6 +48,7 @@
                     var files = ["GeoLite2-City.tar.gz", /*"GeoLite2-Country.tar.gz"*/];
                     for(var i = 0; i<files.length; i++) {
                       var file = new File(project.basedir + "/src/main/resources/" + files[i]);
+                      file.getParentFile().mkdirs();
 					  if(!file.exists()) {
                          var url = "http://geolite.maxmind.com/download/geoip/database/" + files[i];
                          System.out.println(url);
@@ -101,9 +102,9 @@
 		</dependency>
 
 	    <dependency>
-		<groupId>com.maxmind.db</groupId>
-		<artifactId>maxmind-db</artifactId>
-		<version>1.2.2</version>
+            <groupId>com.maxmind.db</groupId>
+            <artifactId>maxmind-db</artifactId>
+            <version>1.2.2</version>
 	    </dependency>
 
 		<dependency>
