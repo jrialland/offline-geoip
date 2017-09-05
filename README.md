@@ -9,7 +9,8 @@ Gives the country and city for an ipv4 address.
 Example code :
 
 ```
-location = GeoIpDb.getLocation(Locale.FRENCH, InetAddress.getByName("202.201.64.112"));
+location = GeoIpDb.getLocation(InetAddress.getByName("202.201.64.112"));
+Assert.assertEquals("China",location.getCountry());
 Assert.assertEquals("Lanzhou", location.getCityName());
 ```
 
