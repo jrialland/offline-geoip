@@ -6,9 +6,16 @@
 
 Gives the country and city for an ipv4 address.
 
+Example code
+
 ```
 location = GeoIpDb.getLocation(Locale.FRENCH, InetAddress.getByName("202.201.64.112"));
 Assert.assertEquals("Lanzhou", location.getCityName());
 ```
 
-This library uses [Maxmind free databases](https://dev.maxmind.com/geoip/geoip2/geolite2/).
+
+```
+This product includes GeoLite2 data created by MaxMind, available from
+<a href="http://www.maxmind.com">http://www.maxmind.com</a>.
+```
+
