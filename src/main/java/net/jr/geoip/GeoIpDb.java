@@ -73,7 +73,7 @@ public class GeoIpDb {
     Location location = new Location();
     boolean found = false;
     try {
-      // fillLocation(locale, inetAddress, country, location);
+      // found = found || fillLocation(locale, inetAddress, country, location);
       found = found || fillLocation(locale, inetAddress, city, location);
     } catch (IOException e) {
       throw new RuntimeException(e);

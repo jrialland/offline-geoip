@@ -49,4 +49,10 @@ public class GeoIpDbTest {
   public void testHashCode() {
     Location.NotFound.hashCode();
   }
+  
+
+  @Test
+  public void testEquals() {
+    Location.NotFound.equals(null);
+  }
 }

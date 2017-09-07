@@ -90,10 +90,6 @@ public class Location {
     return subdivisions;
   }
 
-  public void setSubdivisions(List<String> subdivisions) {
-    this.subdivisions = subdivisions;
-  }
-
   public String getPostalCode() {
     return postalCode;
   }
