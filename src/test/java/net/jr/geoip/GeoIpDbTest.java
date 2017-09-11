@@ -13,7 +13,7 @@ public class GeoIpDbTest {
   @Test
   public void testSimple() throws Exception {
     Location location = GeoIpDb.getLocation(InetAddress.getByAddress(new byte[] { 80, 124, (byte) 164, (byte) 139 }));
-    Assert.assertEquals("Hopital-Camfrout", location.getCityName());
+    Assert.assertTrue(location.getCityName().equals("Saint-Urbain") || location.getCityName().equals("Hopital-Camfrout"));
     System.out.println(location);
   }
 
