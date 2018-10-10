@@ -41,7 +41,10 @@ public class GeoIpDb {
   }
 
   private static Reader loadDb(String resourceName) throws IOException {
-    URL resourceUrl = GeoIpDb.class.getClassLoader().getResource(resourceName);
+    URL resourceUrl = GeoIpDb.class.getResource(resourceName);
+    if(resourceUrl == null) {
+        throw new RuntimeException("could not load " + resourceName);
+    }
     TarArchiveInputStream tar = new TarArchiveInputStream(new GZIPInputStream(resourceUrl.openStream()));
     getMmdb(tar);
     return new Reader(tar, new CHMCache());
