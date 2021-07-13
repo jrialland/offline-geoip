@@ -38,7 +38,8 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz</url>
+							<!--<url>http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz</url>-->
+							<url>https://github.com/DocSpring/geolite2-city-mirror/raw/master/GeoLite2-City.tar.gz</url>
 							<outputFileName>GeoLite2-City.tar.gz</outputFileName>
 							<outputDirectory>${project.basedir}/target/generated-resources/geolite/net/jr/geoip</outputDirectory>
 						</configuration>
